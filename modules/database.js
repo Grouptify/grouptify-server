@@ -34,30 +34,74 @@ module.exports = function (credentials) {
         // TODO: limit is currently unimplemented
         getProjectsBySkills: (skills, limit) => {
             return new Promise(function (resolve, reject) {
-                connection.nodes.find({skills: skills}, (err, projects) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(projects);
-                    }
+                // let searchedSkills = 0;
+                // let projects = [];
+                // skills.forEach((skill) => {
+                //     connection.projects.find({skills: skills, 'team.4': {$exists: false}}, (err, projects) => {
+                //         searchedSkills++;
+                //         if (searchedSkills >= skills.length) {
+                //             resolve(projects);
+                //         }
+                //     });
+                // });
+                connection.projects.find({skills: {$in: skills}}, (err, projects) => {
+                    resolve(projects);
                 });
             });
         },
-        createProject: (name, team, description, skills) => {
+        createProject: (userID, name, team, description, skills) => {
             return new Promise((resolve, reject) => {
-                connection.nodes.insert({name: name, team: team, description: description, skills: skills}, (err) => {
+                connection.projects.insert({name: name, team: team, swipes: [], description: description, skills: skills}, (err, project) => {
                     if (err) {
                         console.error(err);
                         reject(err);
+                    } else {
+                        connection.users.updateOne({_id: mongojs.ObjectId(userID)}, {project: project._id.toString()}, (err) => {
+                            if (err) {
+                                console.error(err);
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
                     }
-                    resolve();
                 });
             });
         },
 
+        createUser: (email, password, name, skills) => {
+            return new Promise((resolve, reject) => {
+                connection.users.findOne({email: email}, (err, user) => {
+                    if (!user) {
+                        connection.users.insert({email: email, password: password, name: name, skills: skills, swipes: [], project: null}, (err) => {
+                            if (err) {
+                                console.error(err);
+                                reject(err);
+                            }
+                            resolve();
+                        });
+                    } else {
+                        reject('Email already in use');
+                    }
+                });
+            });
+        },
+        getUserByEmail: (email) => {
+            return new Promise((resolve, reject) => {
+                connection.users.findOne({email: email}, (err, user) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(user);
+                    }
+                });
+            });
+        },
         authenticateUser: (email, password) => {
             return new Promise((resolve, reject) => {
                 connection.users.findOne({email: email, password: password}, (err, user) => {
+                    console.log('user');
+                    console.log(user);
                     if (err || !user) {
                         reject(err);
                     } else {
