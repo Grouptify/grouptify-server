@@ -1,0 +1,8 @@
+.DS_Store
+certificates/**
+**/logs/**
+**/node_modules/**
+**/bower_components/**
+modules/pages/resources/styles/dist/**
+
+modules/local_credentials.js

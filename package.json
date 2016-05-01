@@ -1,0 +1,42 @@
+{
+  "name": "grouptify-server",
+  "version": "0.0.1",
+  "description": "Grouptify Server",
+  "main": "main.js",
+  "engines": {
+    "node": "5.11.0"
+  },
+  "scripts": {
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dudeofawesome/grouptify-server.git"
+  },
+  "author": "Louis Orleans <louis@orleans.io> (http://orleans.io)",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/dudeofawesome/grouptify-server/issues"
+  },
+  "homepage": "https://github.com/dudeofawesome/grouptify-server#readme",
+  "dependencies": {
+    "async": "2.0.0-rc.1",
+    "body-parser": "1.15.0",
+    "chalk": "^1.1.1",
+    "cookie-parser": "1.4.1",
+    "express": "4.13.4",
+    "express-session": "1.13.0",
+    "gulp": "3.9.1",
+    "mongojs": "^2.3.0"
+  },
+  "devDependencies": {
+    "gulp-jshint": "2.0.0",
+    "gulp-mocha": "2.2.0",
+    "jshint": "2.9.1",
+    "mocha": "2.4.5",
+    "request": "2.69.0",
+    "should": "8.2.2",
+    "supertest": "1.2.0"
+  }
+}
