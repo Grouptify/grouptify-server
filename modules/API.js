@@ -16,10 +16,14 @@ module.exports = function (baseURL, app, database, _port) {
                 });
 
                 app.post(baseURL + 'user', (req, res) => {
+                    console.log(req.body);
                     if (req.body.email && req.body.password && req.body.name && req.body.skills) {
-                        database.createUser(req.body.email, req.body.password, req.body.name, req.body.skills).then((user) => {
-                            req.session.userID = user._id.toString();
-                            res.json(user);
+                        database.createUser(req.body.email, req.body.password, req.body.name, req.body.skills).then((userID) => {
+                            req.session.userID = userID;
+                            req.session.name = req.body.name;
+                            req.session.email = req.body.email;
+                            req.session.skills = req.body.skills;
+                            res.json(userID);
                         }).catch((err) => {
                             res.json({error: err});
                         });
@@ -59,10 +63,36 @@ module.exports = function (baseURL, app, database, _port) {
                     }
                 });
 
+                app.post(baseURL + 'project/swipe', (req, res) => {
+                    if (req.body.userID && req.body.projectID, req.body.dest, req.body.dir) {
+                        if (req.body.dest === 'user') {
+                            database.addUserSwipe(req.body.userID, req.body.projectID, req.body.dir).then((match) => {
+                                res.json(match);
+                            }).catch((err) => {
+                                res.json(err);
+                            });
+                        } else {
+                            database.addProjectSwipe(req.body.projectID, req.body.userID, req.body.dir).then((match) => {
+                                res.json(match);
+                            }).catch((err) => {
+                                res.json(err);
+                            });
+                        }
+                    } else {
+                        res.json({error: 'Missing credentials'});
+                    }
+                });
+
                 app.get(baseURL + 'projects', (req, res) => {
                     if (req.session.userID) {
                         database.getProjectsBySkills(req.session.skills).then((projects) => {
                             res.json(projects);
+                        });
+                    } else if (req.query.userID) {
+                        database.getUser(req.query.userID).then((user) => {
+                            database.getProjectsBySkills(user.skills).then((projects) => {
+                                res.json(projects);
+                            });
                         });
                     } else {
                         res.json({error: 'Not authenticated'});
