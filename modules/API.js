@@ -21,7 +21,7 @@ module.exports = function (baseURL, app, database, _port) {
                             req.session.userID = user._id.toString();
                             res.json(user);
                         }).catch((err) => {
-                            res.json(err);
+                            res.json({error: err});
                         });
                     } else {
                         res.json({error: 'Missing credentials'});
