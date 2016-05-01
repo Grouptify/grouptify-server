@@ -93,7 +93,7 @@ module.exports = function (credentials) {
 
                 connection.projects.update({_id: mongojs.ObjectId(projectID)}, {$push: {swipes: userID}}, (err, project) => {
                     if (err) {
-DSD                        console.error(err);
+                        console.error(err);
                         reject(err);
                     } else {
                         connection.users.updateOne({_id: mongojs.ObjectId(userID)}, {project: project._id.toString()}, (err) => {
