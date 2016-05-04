@@ -79,7 +79,7 @@ module.exports = function (baseURL, app, database, _port) {
                             });
                         }
                     } else {
-                        res.json({error: 'Missing credentials'});
+                        res.json({error: 'Missing info'});
                     }
                 });
 

@@ -70,42 +70,44 @@ module.exports = function (credentials) {
         },
         addUserSwipe: (userID, projectID, dir) => {
             return new Promise((resolve, reject) => {
-                connection.projects.update({}, (err, project) => {
-                    if (err) {
-                        console.error(err);
-                        reject(err);
-                    } else {
-                        connection.users.updateOne({_id: mongojs.ObjectId(userID)}, {project: project._id.toString()}, (err) => {
-                            if (err) {
-                                console.error(err);
-                                reject(err);
-                            } else {
-                                resolve();
-                            }
-                        });
-                    }
-                });
+                // connection.projects.update({}, (err, project) => {
+                //     if (err) {
+                //         console.error(err);
+                //         reject(err);
+                //     } else {
+                //         connection.users.updateOne({_id: mongojs.ObjectId(userID)}, {project: project._id.toString()}, (err) => {
+                //             if (err) {
+                //                 console.error(err);
+                //                 reject(err);
+                //             } else {
+                //                 resolve();
+                //             }
+                //         });
+                //     }
+                // });
+                resolve();
             });
         },
         addProjectSwipe: (projectID, userID, dir) => {
             return new Promise((resolve, reject) => {
-                let matches = [];
-
-                connection.projects.update({_id: mongojs.ObjectId(projectID)}, {$push: {swipes: userID}}, (err, project) => {
-                    if (err) {
-                        console.error(err);
-                        reject(err);
-                    } else {
-                        connection.users.updateOne({_id: mongojs.ObjectId(userID)}, {project: project._id.toString()}, (err) => {
-                            if (err) {
-                                console.error(err);
-                                reject(err);
-                            } else {
-                                resolve(matches);
-                            }
-                        });
-                    }
-                });
+                // let matches = [];
+                //
+                // connection.projects.update({_id: mongojs.ObjectId(projectID)}, {$push: {swipes: userID}}, (err, project) => {
+                //     if (err) {
+                //         console.error(err);
+                //         reject(err);
+                //     } else {
+                //         connection.users.updateOne({_id: mongojs.ObjectId(userID)}, {project: project._id.toString()}, (err) => {
+                //             if (err) {
+                //                 console.error(err);
+                //                 reject(err);
+                //             } else {
+                //                 resolve(matches);
+                //             }
+                //         });
+                //     }
+                // });
+                resolve();
             });
         },
 
